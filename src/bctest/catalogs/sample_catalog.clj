@@ -1,4 +1,6 @@
-(ns bctest.catalogs.sample-catalog)
+(ns bctest.catalogs.sample-catalog
+  (:require [onyx.plugin.redis])
+  )
 
 ;;; Catalogs describe each task in a workflow. We use
 ;;; them for describing input and output sources, injecting parameters,
@@ -48,6 +50,15 @@
        :onyx/batch-timeout batch-timeout
        :onyx/doc ""}
 
+       {:onyx/name :prep-redis-data
+       :onyx/fn :bctest.functions.sample-functions/prep-redis-data
+       :onyx/type :function
+       :onyx/batch-size batch-size
+       :onyx/batch-timeout batch-timeout
+       :onyx/doc ""}
+
+
+
       {:onyx/name :write-lines
        :onyx/plugin :onyx.plugin.core-async/output
        :onyx/type :output
@@ -55,4 +66,12 @@
        :onyx/batch-size batch-size
        :onyx/batch-timeout batch-timeout
        :onyx/max-peers 1
-       :onyx/doc "Writes segments to a core.async channel"}]))
+       :onyx/doc "Writes segments to a core.async channel"}
+
+      {:onyx/name :out-to-redis
+       :onyx/plugin :onyx.plugin.redis/writer
+       :onyx/type :output
+       :onyx/medium :redis
+       :redis/uri "redis://127.0.0.1:6379"
+       :onyx/batch-size batch-size}
+       ]))

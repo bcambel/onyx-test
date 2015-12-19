@@ -10,7 +10,7 @@
             [bctest.utils :as u]
             [onyx.api]))
 
-(defn submit-job [dev-env]
+(defn submit-job [dev-env f]
   (let [log-config {:onyx.log/config {:level :trace}}
 
         dev-cfg (-> "dev-peer-config.edn" resource slurp read-string)
@@ -21,7 +21,7 @@
         ;; Stubs the catalog entries for core.async I/O
         dev-catalog (u/in-memory-catalog (build-catalog 20 50) stubs)
         ;; Stubs the lifecycles for core.async I/O
-        dev-lifecycles (u/in-memory-lifecycles (build-lifecycles) dev-catalog stubs)]
+        dev-lifecycles (u/in-memory-lifecycles (build-lifecycles f) dev-catalog stubs)]
     ;; Automatically pipes the data structure into the channel, attaching :done at the end
     ; (u/bind-inputs! dev-lifecycles {:read-lines dev-inputs/lines})
     (let [job {:workflow workflow

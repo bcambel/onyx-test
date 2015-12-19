@@ -49,10 +49,10 @@
   {:lifecycle/before-task-start inject-in-reader
    :lifecycle/after-task-stop close-reader})
 
-(defn build-lifecycles []
+(defn build-lifecycles [f]
   [
     {:lifecycle/task :in
-    :buffered-reader/filename "data1.txt"
+    :buffered-reader/filename f
     :lifecycle/calls ::in-calls}
 
     {:lifecycle/task :in

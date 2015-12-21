@@ -8,7 +8,7 @@
 
    [:parse-line :parse-data]
    [:parse-data :selector2]
-   [:selector2 :write-lines]
+   ; [:selector2 :write-lines]
    [:selector2 :prep-redis-data]
    [:prep-redis-data :out-to-redis]
 

@@ -8,6 +8,7 @@
             [taoensso.timbre :as log]
             )
   (:import  [java.net URLDecoder URLEncoder]
+            [com.maxmind.geoip2.exception AddressNotFoundException]
               [eu.bitwalker.useragentutils UserAgent DeviceType Browser OperatingSystem]))
 
 (def custom-formatter (f/formatter "yyyy-MM-dd"))
@@ -149,3 +150,28 @@
       (for [#^String cookie (.split cookie-string ";")]
         (let [keyval (map (fn [#^String x] (.trim x)) (.split cookie "=" 2))]
           [(first keyval) (second keyval)])))))
+
+(def excludes ["127.0.0.1"])
+
+(defn get-country*
+  [db-reader ip]
+  ; (log/infof "[%s]" ip)
+  (if (or (nil? ip) (in? excludes ip ))
+    {:country :localhost :city :localhost}
+    (try
+      (let [response (.city db-reader (java.net.InetAddress/getByName ip))]
+        {:country (.getName (.getCountry response))
+         :city (.getName (.getCity response))})
+      (catch AddressNotFoundException anfe
+        (do
+          (log/warn "Not found " ip)
+          {:country :na :city :na}))
+      (catch Throwable t
+        (do (log/error t ip)
+          {:country :error :city :error}
+        )))))
+
+(def ip-db (java.io.File. "/opt/geoip2/GeoLite2-City.mmdb"))
+(def db-reader (.build (com.maxmind.geoip2.DatabaseReader$Builder. ip-db)))
+
+(def get-country (partial get-country* db-reader))

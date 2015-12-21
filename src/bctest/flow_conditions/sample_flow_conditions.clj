@@ -24,7 +24,7 @@
 
 (defn event-of?
   [event old {:keys [event-name]} all-new expected-event]
-  (log/infof "%s VS %s" event-name expected-event)
+  ; (log/infof "%s VS %s" event-name expected-event)
   (= event-name expected-event)
   )
 

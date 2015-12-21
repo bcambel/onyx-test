@@ -12,9 +12,11 @@
                  [clojurewerkz/urly "1.0.0"]
                  [clj-time "0.11.0"]
                  [eu.bitwalker/UserAgentUtils "1.18"]
+                 [com.maxmind.geoip2/geoip2 "2.3.1"]
                  [com.taoensso/carmine "2.12.1"]
                  [org.onyxplatform/onyx-redis "0.8.2.2"]
                  ]
+  :jvm-opts ["-Xmx10g"]
   :profiles {:uberjar {:aot [bctest.launcher.aeron-media-driver
                              bctest.launcher.launch-prod-peers]}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]

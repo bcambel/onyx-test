@@ -58,7 +58,6 @@
        :onyx/doc ""}
 
 
-
       {:onyx/name :write-lines
        :onyx/plugin :onyx.plugin.core-async/output
        :onyx/type :output

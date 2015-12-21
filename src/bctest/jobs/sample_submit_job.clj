@@ -6,6 +6,7 @@
             [bctest.lifecycles.sample-lifecycle :refer [build-lifecycles] :as sl]
             [bctest.flow-conditions.sample-flow-conditions :as sf]
             [bctest.functions.sample-functions]
+            [bctest.windows.aggregates :as agg]
             [bctest.dev-inputs.sample-input :as dev-inputs]
             [bctest.utils :as u]
             [onyx.api]))
@@ -28,6 +29,8 @@
                :catalog dev-catalog
                :lifecycles dev-lifecycles
                :flow-conditions sf/flow-conditions
+               :windows agg/windows
+               :triggers agg/triggers
                :task-scheduler :onyx.task-scheduler/balanced}]
       (onyx.api/submit-job peer-config job)
       ;; Automatically grab output from the stubbed core.async channels,
